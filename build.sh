@@ -15,6 +15,12 @@ do
         break;
     fi
 done
+CXX=clang++
+CLANG=`which $CXX`
+if [ -e "${CLANG}" ] && [ "3.3" = "$(echo -e $(clang --version | head -n1 | awk '{print $3}')'\n'3.3 | sort -V | head -n1)" ]; then
+    echo CXX: compatible clang found at ${CLANG}...
+    CXX_PATHNAME=${CLANG}
+fi
 if [ ! -e "${CXX_PATHNAME}" ]; then
     cat <<EOF
 It seems that C++11-compatible compilers are not installed on your system.
@@ -22,7 +28,7 @@ Please install either g++ 4.8 (or newer) or clang++ 3.3 (or newer).
 EOF
     exit 1
 fi
-for CC in gcc-4.8 gcc-4.9 clang-3.5 clang-3.4 clang-3.3
+for CC in gcc-4.8 gcc-4.9 clang-3.5 clang-3.4 clang-3.3 clang
 do
     CC_PATHNAME=`which $CC`
     if [ -e "$CC_PATHNAME" ]; then
